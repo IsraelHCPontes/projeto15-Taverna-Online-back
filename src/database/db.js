@@ -22,4 +22,6 @@ export default async function connectMongoDB() {
 
   return { db, client };
 }
-
+//exemple
+//import connectMongoDB from '../database/db.js'
+//const { db } = await connectMongoDB();
