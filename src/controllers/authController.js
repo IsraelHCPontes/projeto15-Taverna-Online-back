@@ -2,8 +2,6 @@ import connectMongoDB from '../database/db.js'
 import bcrypt from 'bcrypt';
 import {v4 as uuid} from 'uuid';
 
-
-
 export async function signUp (req, res) {
     const user = req.body;
     const passwordHash =  bcrypt.hashSync(user.password, 10);
@@ -17,7 +15,7 @@ export async function signUp (req, res) {
     try{                
         const { db } = await connectMongoDB();
         await  db.collection("users").insertOne(newBody); 
-        res.status(201).send({message:"Usuario cadastrastado sucesso"})
+        res.status(201).send({message:"Usuário cadastrado com sucesso"})
     }catch(err){
         res.status(422).send(err);
     }   
