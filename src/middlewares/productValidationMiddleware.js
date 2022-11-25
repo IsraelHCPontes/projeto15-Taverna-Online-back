@@ -15,7 +15,7 @@ export default async function productValidation(req, res, next){
         const { db, client } = await connectMongoDB();
         const produtoExiste =  await  db.collection("products").findOne({name: product.name});
         if(produtoExiste){
-            res.status(409).send({message:"Produto já existe"});
+            res.status(409).send("Produto já existe");
             return;
           };
         next();
