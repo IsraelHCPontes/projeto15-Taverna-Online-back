@@ -5,7 +5,7 @@ const signUpSchema = Joi.object({
     email: Joi.string().email().required(),
     image: Joi.string().required(),
     password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-    confirmPassword: Joi.ref('password'),
+    confirmPassword: Joi.string().required()
 })
 
 export default signUpSchema

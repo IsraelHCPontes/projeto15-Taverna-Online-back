@@ -11,6 +11,11 @@ export default async function signUpValidation(req, res, next){
         return;
     };
 
+    if(user.password !== user.confirmPassword){
+        res.status(409).send({message:"As senhas precisam ser iguais"})
+        return;
+     }
+
     try{                
         const { db, client } = await connectMongoDB();
         const emailExiste =  await  db.collection("users").findOne({email: user.email});
