@@ -2,6 +2,8 @@ import connectMongoDB from '../database/db.js'
 import bcrypt from 'bcrypt';
 import {v4 as uuid} from 'uuid';
 
+const { db } = await connectMongoDB();
+
 export async function signUp (req, res) {
     const user = req.body;
     const passwordHash =  bcrypt.hashSync(user.password, 10);
@@ -12,7 +14,7 @@ export async function signUp (req, res) {
         password: passwordHash
        }
 
-    try{                
+    try{
         const { db } = await connectMongoDB();
         await  db.collection("users").insertOne(newBody); 
         res.status(201).send({message:"Usuário cadastrado com sucesso"})
@@ -33,7 +35,6 @@ export  async function signIn(req, res) {
     
     try{
         const { db } = await connectMongoDB();
-        
         const sessionAlready = await  db.collection("sessions").findOne({userId: user._id});
 
         if(sessionAlready){
@@ -47,7 +48,7 @@ export  async function signIn(req, res) {
     }
 }
 
-export  async function getUser(req, res) {
+export async function getUser(req, res) {
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "");
     
@@ -56,6 +57,7 @@ export  async function getUser(req, res) {
     }
   
     try {
+        const { db } = await connectMongoDB();
         const sessions = await db.collection("sessions").findOne({ token });
         console.log(sessions);
 
