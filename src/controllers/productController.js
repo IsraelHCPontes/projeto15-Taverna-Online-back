@@ -22,3 +22,13 @@ export async function createProduct (req, res) {
         res.sendStatus(422);
     }
 }
+
+export async function getProductsCart(req, res){
+    const { _id } = res.locals.user;
+    try{
+        const productsCart = await db.collection("cart").find({userId: _id}).toArray();
+        res.status(200).send(productsCart)
+    }catch(error){
+        res.status(500).send(error)
+    }
+}

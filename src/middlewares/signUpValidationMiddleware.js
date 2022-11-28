@@ -26,6 +26,6 @@ export default async function signUpValidation(req, res, next){
         next();
     }catch(err){
         res.status(402).send(err);
-    }   
-}
+    };   
+};
 
