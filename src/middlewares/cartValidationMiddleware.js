@@ -1,9 +1,10 @@
-import productSchema from '../schemas/productSchema.js';
+import cartSchema from '../schemas/cartSchema.js';
 import connectMongoDB from "../database/db.js";
 
-export default async function productValidation(req, res, next){
+export default async function cartValidation(req, res, next){
     const product = req.body;
-    const validation = productSchema.validate(product, {abortEarly: true});
+
+    const validation = cartSchema.validate(product, {abortEarly: true});
     
     if(validation.error){
         const erros = validation.error.details.map(detail => detail);
@@ -13,11 +14,11 @@ export default async function productValidation(req, res, next){
 
     try{                
         const { db, client } = await connectMongoDB();
-        const produtoExiste =  await  db.collection("products").findOne({name: product.name});
-        if(produtoExiste){
-            res.status(409).send("Produto já existe");
+        const temNoCarrinho =  await  db.collection("cart").findOne({name: product.name});
+        if(temNoCarrinho){
+            res.status(409).send("Produto já está no carrinho!");
             return;
-          };
+        };
         next();
     }catch(err){
         res.status(500).send(err);
