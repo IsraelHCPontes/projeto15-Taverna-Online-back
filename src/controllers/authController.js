@@ -46,3 +46,25 @@ export  async function signIn(req, res) {
         res.status(500).send(err);
     }
 }
+
+export  async function getUser(req, res) {
+    const { authorization } = req.headers;
+    const token = authorization?.replace("Bearer ", "");
+    
+    if (!token) {
+        return res.sendStatus(401);
+    }
+  
+    try {
+        const sessions = await db.collection("sessions").findOne({ token });
+        console.log(sessions);
+
+        const user = await db.collection("users").findOne({ _id: sessions?.userId });
+        delete user.password;
+
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+}
